@@ -10,5 +10,6 @@ Construção de projeto de banco de dados de um​ CRM para sistema de Varejo, p
 - [Gabriel Milano](https://github.com/gabrielmilano)
 - [Vitor Lidorio](https://github.com/VitorLidorio)
 
-- # Modelo ER Físico
+# Modelo ER Físico
+https://drive.google.com/file/d/1CkvqovhMYCF3JO3P3qt3WcCK4j3H6XAy/view
 ![Modeol físico](https://github.com/isiscostabb/CRM-DB/blob/main/modelo%20fisico.png)
