@@ -1,1 +1,13 @@
-# CRM-DB
+# Sobre o projeto
+
+Engenharia de Software 3a fase – Banco de Dados II – Prof. Luciano B. Fernandes 
+
+Construção de projeto de banco de dados de um​ CRM para sistema de Varejo, projetado para uma empresa distribuidora
+
+# Desenvolvedores
+
+- [Isis Costa](https://github.com/isiscostabb)
+- [Gabriel Milano](https://github.com/isiscostabb)
+- [Vitor Lidorio](https://github.com/isiscostabb)
+
+- # Modelo ER Físico
