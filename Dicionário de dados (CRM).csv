@@ -1,0 +1,77 @@
+,,,,,,,
+,,,,,,,
+ATRIBUTOS,,,,,,,
+Produtos,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_produto ,,int,,NOT NULL,X,,Código de identificador do produto
+id_fornecedor,,int,,NOT NULL,,X,Código de identificador da fornecedor
+id_categoria,,int,,NOT NULL,,X,Código de identificador da categoria
+nome_prod ,,character varying,,NOT NULL,,,Nome do produto
+valor_prod,,double precision,,NOT NULL,,,Valor do produto
+,,,,,,,
+ATRIBUTOS,,,,,,,
+Categorias,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_categoria,,int,,NOT NULL,X,,Código de identificador da categoria
+nome_categoria,,character varying,,NOT NULL,,,Nome do categoria
+,,,,,,,
+ATRIBUTOS,,,,,,,
+Clientes,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_cliente ,,int,,NOT NULL,X,,Código de identificador do cliente
+id_endereço,,int,,NOT NULL,,X,Código de identificador da cidade
+nome_cliente ,,character varying,,NOT NULL,,,Nome da empresa do cliente
+cnpj_cliente,,int,,NOT NULL,,,Cnpj da empresa cliente
+telefone ,,int,,NOT NULL,,,Telefone da empresa cliente
+email_cliente,,character varying,,NOT NULL,,,Email da empresa cliente
+,,,,,,,
+ATRIBUTOS,,,,,,,
+Endereços,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_endereço,,int,,NOT NULL,X,,Código de identificador da cidade
+endereço ,,character varying,,NOT NULL,,,Endereço 
+cidade ,,character varying,,NOT NULL,,,Nome da cidade
+estado ,,character varying,,NOT NULL,,,Nome do estado
+país,,character varying,,NOT NULL,,,Nome do país
+cep,,character varying,,NOT NULL,,,Cep da cidade
+,,,,,,,
+ATRIBUTOS,,,,,,,
+ItemPedido,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_pedido,,int,,NOT NULL,X,,Código de identificador do pedido
+id_produto ,,int,,NOT NULL,,X,Código de identificador do produto
+valor_pedido,,double precision,,NOT NULL,,,Valor do produto vendido para o cliente
+quantidade_pedido,,int,,NOT NULL,,,Quantidade do produto vendido para o cliente
+id_saida,,int,,NOT NULL,,X,Código de identificador da saída
+,,,,,,,
+ATRIBUTOS,,,,,,,
+Entradas,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_entrada ,,int,,NOT NULL,X,,Código de identificador da entrada
+id_fornecedor,,int,,NOT NULL,,X,Código de identificador do fornecedor
+valor_entrada,,double precision,,NOT NULL,,,Valor do produto adquirido
+quantidade_entrada,,int,,NOT NULL,,,Quantidade do produto vendido para o cliente
+,,,,,,,
+ATRIBUTOS,,,,,,,
+Saídas,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_saida,,int,,NOT NULL,X,,Código de identificador da saída
+id_cliente ,,int,,NOT NULL,,X,Código de identificador do cliente
+,,,,,,,
+ATRIBUTOS,,,,,,,
+Fornecedores,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_fornecedor,,int,,NOT NULL,X,,Código de identificador do fornecedor
+id_endereço,,int,,NOT NULL,,X,Código de identificador da cidade
+nome_fornecedor,,character varying,,NOT NULL,,,Nome da empresa fornecedora
+cnpj_fornecedor,,int,,NOT NULL,,,Cnpj da empresa fornecedora
+telefone_fornecedor,,int,,NOT NULL,,,Telefone da empresa fornecedora
+email_fornecedor,,character varying,,NOT NULL,,,Email da empresa fornecedora
+,,,,,,,
+ATRIBUTOS,,,,,,,
+MovimentosFinanceiros,,Tipo do Dado,Valor min e max,Nulidade,PK,FK,Descrição
+id_movto,,int,,NOT NULL,X,,Código de identificador do movimento financeiro
+descricao_movto,,text,,NOT NULL,,,Descrição do tipo de movimento (entrada | saída)
+data_movto,,date,,NOT NULL,,,Data
+hora_movto,,time,,NOT NULL,,,Horário
+usuário_movto,,character varying,,NOT NULL,,,Nome do usuário
+,,,,,,,
+,,,,,,,
+INDÍCES,,,,,,,
+Nome do indíce,,Clustered,Non Clustered,Unique,Colunas,,
+idx_gin_descricao,,,X,,MovimentoFinanceiro(descricao),,
+idx_cliente,,,X,,Clientes(nome_cliente) ,,
+idx_movto,,,X,,"MovimentoFinanceiro(data, hora)",,
+,,,,,,,
