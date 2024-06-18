@@ -1,76 +1,208 @@
-CREATE TABLE MovimentosFinanceiro (
-  id_movto INTEGER PRIMARY KEY,
-  descricao_movto TEXT NOT NULL,
-  data_movto DATE NOT NULL,
-  hora_movto TIMESTAMP,
-  usuario_movto CHAR
-);
+CREATE TABLE IF NOT EXISTS public."Avaliacao"
+(
+    id_avaliacao integer NOT NULL,
+    id_cliente integer NOT NULL,
+    id_servico integer NOT NULL,
+    nota numeric(10,0) NOT NULL,
+    comentario character varying COLLATE pg_catalog."default" NOT NULL,
+    data_avaliacao date NOT NULL,
+    CONSTRAINT "Avaliacao_pkey" PRIMARY KEY (id_avaliacao),
+    CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
+        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT id_servico_fk FOREIGN KEY (id_servico)
+        REFERENCES public."Servico" (id_servico) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
 
-CREATE TABLE Enderecos (
-  id_endereco INTEGER PRIMARY KEY,
-  endereco CHAR NOT NULL,
-  cidade CHAR NOT NULL,
-  estado CHAR NOT NULL,
-  pais CHAR NOT NULL,
-  cep INTEGER NOT NULL
-);
+TABLESPACE pg_default;
 
-CREATE TABLE Categorias (
-  id_categoria INTEGER PRIMARY KEY,
-  nome_categoria CHAR
-);
+ALTER TABLE IF EXISTS public."Avaliacao"
+    OWNER to postgres;
 
-CREATE TABLE Clientes (
-  id_cliente INTEGER PRIMARY KEY,
-  id_endereco INTEGER,
-  nome_cliente CHAR NOT NULL,
-  cnpj_cliente INTEGER NOT NULL,
-  telefone INTEGER NOT NULL,
-  email_cliente CHAR NOT NULL,
-  FOREIGN KEY (id_endereco) REFERENCES Enderecos(id_endereco)
-);
+/////////////////////////////////////////////////////////////////
 
-CREATE TABLE Fornecedores (
-  id_fornecedor INTEGER PRIMARY KEY,
-  id_endereco INTEGER,
-  nome_fornecedor CHAR NOT NULL,
-  cnpj_fornecedor INTEGER NOT NULL,
-  telefone_fornecedor INTEGER NOT NULL,
-  email_fornecedor CHAR NOT NULL,
-  FOREIGN KEY (id_endereco) REFERENCES Enderecos(id_endereco)
-);
+CREATE TABLE IF NOT EXISTS public."Clientes"
+(
+    id_cliente integer NOT NULL,
+    nome_cliente character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    telefone character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    endereco character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    cpf_cnpj character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    data_cadastro date NOT NULL,
+    tipo_cliente character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Clientes_pkey" PRIMARY KEY (id_cliente)
+)
 
-CREATE TABLE Produtos (
-  id_produto INTEGER PRIMARY KEY,
-  id_fornecedor INTEGER,
-  id_categoria INTEGER,
-  nome_prod char NOT NULL,
-  valor_prod INTEGER NOT NULL,
-  FOREIGN KEY (id_fornecedor) REFERENCES Fornecedores(id_fornecedor),
-  FOREIGN KEY (id_categoria) REFERENCES Categorias(id_categoria)
-);
+TABLESPACE pg_default;
 
-CREATE TABLE Saidas (
-  id_saida INTEGER PRIMARY KEY,
-  id_cliente INTEGER,
-  FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente)
-);
+ALTER TABLE IF EXISTS public."Clientes"
+    OWNER to postgres;
+/////////////////////////////////////////////////////////////////
 
-CREATE TABLE Entradas (
-  id_entrada INTEGER PRIMARY KEY,
-  id_fornecedor INTEGER,
-  valor_entrada INTEGER NOT NULL,
-  quantidade_entrada INTEGER NOT NULL,
-  FOREIGN KEY (id_fornecedor) REFERENCES Fornecedores(id_fornecedor)
-);
+CREATE TABLE IF NOT EXISTS public."Entrada"
+(
+    id_entrada integer NOT NULL,
+    id_cliente integer NOT NULL,
+    data_entrada date NOT NULL,
+    valor_entrada double precision NOT NULL,
+    metodo_pagamento character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    obs character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Entrada_pkey" PRIMARY KEY (id_entrada),
+    CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
+        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
 
-CREATE TABLE ItemPedido (
-  id_pedido INTEGER PRIMARY KEY,
-  id_produto INTEGER,
-  valor_pedido INTEGER NOT NULL,
-  quantidade_pedido INTEGER NOT NULL,
-  id_saida INTEGER,
-  FOREIGN KEY (id_saida) REFERENCES Saidas(id_saida),
-  FOREIGN KEY (id_produto) REFERENCES Produtos(id_produto)
-);
+TABLESPACE pg_default;
 
+ALTER TABLE IF EXISTS public."Entrada"
+    OWNER to postgres;
+/////////////////////////////////////////////////////////////////
+
+CREATE TABLE IF NOT EXISTS public."Funcionarios"
+(
+    id_funcionario integer NOT NULL,
+    nome_funcionario character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    cargo character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    telefone character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    data_contratacao date NOT NULL,
+    prazo_contrato character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    genero character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    cpf character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    endereco character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Funcionarios_pkey" PRIMARY KEY (id_funcionario)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Funcionarios"
+    OWNER to postgres;
+/////////////////////////////////////////////////////////////////
+
+CREATE TABLE IF NOT EXISTS public."Maquina"
+(
+    "id_maquina " integer NOT NULL,
+    id_cliente integer NOT NULL,
+    tipo character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    status character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    hora_inicio time with time zone NOT NULL,
+    hora_fim time with time zone NOT NULL,
+    CONSTRAINT "Maquina_pkey" PRIMARY KEY ("id_maquina "),
+    CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
+        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Maquina"
+    OWNER to postgres;
+/////////////////////////////////////////////////////////////////
+
+CREATE TABLE IF NOT EXISTS public."Movimento_Financeiro"
+(
+    id_movto integer NOT NULL,
+    descricao_movto character varying(5) COLLATE pg_catalog."default" NOT NULL,
+    data_movto date NOT NULL,
+    hora_movto time with time zone NOT NULL,
+    CONSTRAINT "Movimento_Financeiro_pkey" PRIMARY KEY (id_movto, descricao_movto)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Movimento_Financeiro"
+    OWNER to postgres;
+/////////////////////////////////////////////////////////////////
+
+CREATE TABLE IF NOT EXISTS public."Reserva"
+(
+    id_reserva integer NOT NULL,
+    id_cliente integer NOT NULL,
+    id_maquina integer NOT NULL,
+    data_reserva date NOT NULL,
+    CONSTRAINT "Reserva_pkey" PRIMARY KEY (id_reserva),
+    CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
+        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT id_maquina_fk FOREIGN KEY (id_maquina)
+        REFERENCES public."Maquina" ("id_maquina ") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+/////////////////////////////////////////////////////////////////
+
+CREATE TABLE IF NOT EXISTS public."Saida"
+(
+    id_saida integer NOT NULL,
+    data_saida date NOT NULL,
+    valor_saida double precision NOT NULL,
+    obs character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Saida_pkey" PRIMARY KEY (id_saida)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Saida"
+    OWNER to postgres;
+/////////////////////////////////////////////////////////////////
+
+CREATE TABLE IF NOT EXISTS public."Servico"
+(
+    id_servico integer NOT NULL,
+    tipo_servico character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    descricao character varying(30) COLLATE pg_catalog."default",
+    produtos character varying(30) COLLATE pg_catalog."default",
+    valor double precision,
+    CONSTRAINT "Servico_pkey" PRIMARY KEY (id_servico)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Servico"
+    OWNER to postgres;
+/////////////////////////////////////////////////////////////////
+
+CREATE TABLE IF NOT EXISTS public."historico_Uso"
+(
+    id_historico integer NOT NULL,
+    id_cliente integer NOT NULL,
+    id_maquina integer NOT NULL,
+    id_reserva integer NOT NULL,
+    CONSTRAINT "historico_Uso_pkey" PRIMARY KEY (id_historico),
+    CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
+        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT id_maquina_fk FOREIGN KEY (id_maquina)
+        REFERENCES public."Maquina" ("id_maquina ") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT id_reserva_fk FOREIGN KEY (id_reserva)
+        REFERENCES public."Reserva" (id_reserva) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."historico_Uso"
+    OWNER to postgres;
