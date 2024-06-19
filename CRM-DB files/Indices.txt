@@ -1,0 +1,22 @@
+CREATE EXTENSION pg_trgm; 
+
+
+CREATE INDEX idx_gin_saida ON Saida 
+
+USING gin (obs gin_trgm_ops); 
+
+ 
+
+CREATE INDEX idx_gin_entrada ON Entrada 
+
+USING gin (obs gin_trgm_ops); 
+
+ 
+
+CREATE INDEX idx_gin_avaliacao ON Avaliacao 
+
+USING gin (comentario gin_trgm_ops); 
+
+ 
+
+CREATE INDEX idx_servico ON Servico (tipo_servico); 
