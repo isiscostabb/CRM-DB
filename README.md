@@ -2,7 +2,7 @@
 
 Engenharia de Software 3a fase – Banco de Dados II – Prof. Luciano B. Fernandes 
 
-Construção de projeto de banco de dados de um​ CRM para sistema de Varejo, projetado para uma empresa distribuidora
+Construção de projeto de banco de dados de um​ CRM para sistema de Varejo, projetado para uma lavanderia
 
 # Desenvolvedores
 
@@ -12,6 +12,6 @@ Construção de projeto de banco de dados de um​ CRM para sistema de Varejo, p
 
 # Modelo ER Físico
 https://drive.google.com/file/d/1CkvqovhMYCF3JO3P3qt3WcCK4j3H6XAy/view
-![Modeol físico](https://github.com/isiscostabb/CRM-DB/blob/main/modelo%20fisico.png)
+![Modelol físico]()
 
 # 4 perguntas de negócio
