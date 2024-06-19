@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS public."Entrada"
     data_entrada date NOT NULL,
     valor_entrada double precision NOT NULL,
     metodo_pagamento character varying(15) COLLATE pg_catalog."default" NOT NULL,
-    obs character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    obs text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT "Entrada_pkey" PRIMARY KEY (id_entrada),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
         REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS public."Saida"
     id_saida integer NOT NULL,
     data_saida date NOT NULL,
     valor_saida double precision NOT NULL,
-    obs character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    obs text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT "Saida_pkey" PRIMARY KEY (id_saida)
 )
 
@@ -178,7 +178,7 @@ ALTER TABLE IF EXISTS public."Servico"
     OWNER to postgres;
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."historico_Uso"
+CREATE TABLE IF NOT EXISTS public."historicoUso"
 (
     id_historico integer NOT NULL,
     id_cliente integer NOT NULL,
