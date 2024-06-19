@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS public."Avaliacao"
     id_cliente integer NOT NULL,
     id_servico integer NOT NULL,
     nota numeric(10,0) NOT NULL,
-    comentario character varying COLLATE pg_catalog."default" NOT NULL,
+    comentario text COLLATE pg_catalog."default" NOT NULL,
     data_avaliacao date NOT NULL,
     CONSTRAINT "Avaliacao_pkey" PRIMARY KEY (id_avaliacao),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
