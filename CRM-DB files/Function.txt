@@ -1,0 +1,42 @@
+CREATE OR REPLACE FUNCTION InserirCliente(codigo INTEGER, nome_cliente VARCHAR,
+										  email VARCHAR, telefone  VARCHAR,
+										  endereco VARCHAR, cpf_cnpj VARCHAR,
+										  data_cadastro DATE, tipo_cliente VARCHAR)
+RETURNS void AS $$
+BEGIN
+	insert into clientes(id_cliente,nome_cliente,email,telefone,endereco,cpf_cnpj,data_cadastro,tipo_cliente)
+	values (codigo,nome_cliente,email,telefone,endereco,cpf_cnpj,data_cadastro,tipo_cliente); 
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+
+CREATE OR REPLACE FUNCTION InserirEntrada(codigo INTEGER, id_cliente INTEGER,
+										  data_entrada DATE, valor_entrada DOUBLE PRECISION,
+										  metodo_pagamento VARCHAR, obs VARCHAR)
+RETURNS void AS $$
+BEGIN
+	insert into entrada(id_entrada,id_cliente,data_entrada,valor_entrada,metodo_pagamento,obs)
+	values (codigo,id_cliente,data_entrada,valor_entrada,metodo_pagamento,obs); 
+	insert into movimento_financeiro(descricao_movto,data_movto,hora_movto)
+	values ('Entrada:' || now(),now()); 
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+
+CREATE OR REPLACE FUNCTION InserirSaida(codigo INTEGER,data_saida DATE, 
+	                                     valor_saida DOUBLE PRECISION, obs VARCHAR)
+RETURNS void AS $$
+BEGIN
+	insert into saida(id_saida,data_saida,valor_saida,obs)
+	values (codigo,data_saida,valor_saida,obs); 
+	insert into movimento_financeiro(descricao_movto,data_movto,hora_movto)
+	values ('Saída:' || now(),now()); 
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+
+
+
