@@ -1,19 +1,23 @@
-CREATE TABLE IF NOT EXISTS public."Avaliacao"
+-- Table: public.avaliacao
+
+-- DROP TABLE IF EXISTS public.avaliacao;
+
+CREATE TABLE IF NOT EXISTS public.avaliacao
 (
     id_avaliacao integer NOT NULL,
     id_cliente integer NOT NULL,
     id_servico integer NOT NULL,
     nota numeric(10,0) NOT NULL,
-    comentario text COLLATE pg_catalog."default" NOT NULL,
+    comentario character varying COLLATE pg_catalog."default" NOT NULL,
     data_avaliacao date NOT NULL,
-    CONSTRAINT "Avaliacao_pkey" PRIMARY KEY (id_avaliacao),
+    CONSTRAINT avaliacao_pkey PRIMARY KEY (id_avaliacao),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
-        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        REFERENCES public.clientes (id_cliente) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
     CONSTRAINT id_servico_fk FOREIGN KEY (id_servico)
-        REFERENCES public."Servico" (id_servico) MATCH SIMPLE
+        REFERENCES public.servico (id_servico) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
@@ -21,12 +25,36 @@ CREATE TABLE IF NOT EXISTS public."Avaliacao"
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Avaliacao"
+ALTER TABLE IF EXISTS public.avaliacao
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.avaliacao FROM estagiario;
+REVOKE ALL ON TABLE public.avaliacao FROM funcionario;
+REVOKE ALL ON TABLE public.avaliacao FROM gerente;
+
+GRANT SELECT ON TABLE public.avaliacao TO estagiario;
+
+GRANT UPDATE, SELECT, INSERT ON TABLE public.avaliacao TO funcionario;
+
+GRANT UPDATE, DELETE, INSERT, SELECT ON TABLE public.avaliacao TO gerente;
+
+GRANT ALL ON TABLE public.avaliacao TO postgres;
+-- Index: idx_gin_avaliacao
+
+-- DROP INDEX IF EXISTS public.idx_gin_avaliacao;
+
+CREATE INDEX IF NOT EXISTS idx_gin_avaliacao
+    ON public.avaliacao USING gin
+    (comentario COLLATE pg_catalog."default" gin_trgm_ops)
+    TABLESPACE pg_default;
 
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."Clientes"
+-- Table: public.clientes
+
+-- DROP TABLE IF EXISTS public.clientes;
+
+CREATE TABLE IF NOT EXISTS public.clientes
 (
     id_cliente integer NOT NULL,
     nome_cliente character varying(30) COLLATE pg_catalog."default" NOT NULL,
@@ -36,26 +64,43 @@ CREATE TABLE IF NOT EXISTS public."Clientes"
     cpf_cnpj character varying(20) COLLATE pg_catalog."default" NOT NULL,
     data_cadastro date NOT NULL,
     tipo_cliente character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT "Clientes_pkey" PRIMARY KEY (id_cliente)
+    CONSTRAINT clientes_pkey PRIMARY KEY (id_cliente)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Clientes"
+ALTER TABLE IF EXISTS public.clientes
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.clientes FROM estagiario;
+REVOKE ALL ON TABLE public.clientes FROM funcionario;
+REVOKE ALL ON TABLE public.clientes FROM gerente;
+
+GRANT SELECT ON TABLE public.clientes TO estagiario WITH GRANT OPTION;
+
+GRANT UPDATE, SELECT, INSERT ON TABLE public.clientes TO funcionario;
+
+GRANT UPDATE, DELETE, INSERT, SELECT ON TABLE public.clientes TO gerente;
+
+GRANT ALL ON TABLE public.clientes TO postgres;
+
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."Entrada"
+-- Table: public.entrada
+
+-- DROP TABLE IF EXISTS public.entrada;
+
+CREATE TABLE IF NOT EXISTS public.entrada
 (
     id_entrada integer NOT NULL,
     id_cliente integer NOT NULL,
     data_entrada date NOT NULL,
     valor_entrada double precision NOT NULL,
     metodo_pagamento character varying(15) COLLATE pg_catalog."default" NOT NULL,
-    obs text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT "Entrada_pkey" PRIMARY KEY (id_entrada),
+    obs character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT entrada_pkey PRIMARY KEY (id_entrada),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
-        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        REFERENCES public.clientes (id_cliente) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
@@ -63,11 +108,33 @@ CREATE TABLE IF NOT EXISTS public."Entrada"
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Entrada"
+ALTER TABLE IF EXISTS public.entrada
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.entrada FROM funcionario;
+REVOKE ALL ON TABLE public.entrada FROM gerente;
+
+GRANT UPDATE, INSERT, SELECT ON TABLE public.entrada TO funcionario;
+
+GRANT UPDATE, DELETE, INSERT, SELECT ON TABLE public.entrada TO gerente;
+
+GRANT ALL ON TABLE public.entrada TO postgres;
+-- Index: idx_gin_entrada
+
+-- DROP INDEX IF EXISTS public.idx_gin_entrada;
+
+CREATE INDEX IF NOT EXISTS idx_gin_entrada
+    ON public.entrada USING gin
+    (obs COLLATE pg_catalog."default" gin_trgm_ops)
+    TABLESPACE pg_default;
+
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."Funcionarios"
+-- Table: public.funcionarios
+
+-- DROP TABLE IF EXISTS public.funcionarios;
+
+CREATE TABLE IF NOT EXISTS public.funcionarios
 (
     id_funcionario integer NOT NULL,
     nome_funcionario character varying(30) COLLATE pg_catalog."default" NOT NULL,
@@ -79,16 +146,27 @@ CREATE TABLE IF NOT EXISTS public."Funcionarios"
     genero character varying(15) COLLATE pg_catalog."default" NOT NULL,
     cpf character varying(20) COLLATE pg_catalog."default" NOT NULL,
     endereco character varying(30) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT "Funcionarios_pkey" PRIMARY KEY (id_funcionario)
+    CONSTRAINT funcionarios_pkey PRIMARY KEY (id_funcionario)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Funcionarios"
+ALTER TABLE IF EXISTS public.funcionarios
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.funcionarios FROM gerente;
+
+GRANT DELETE, INSERT, SELECT, UPDATE ON TABLE public.funcionarios TO gerente;
+
+GRANT ALL ON TABLE public.funcionarios TO postgres;
+
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."Maquina"
+-- Table: public.maquina
+
+-- DROP TABLE IF EXISTS public.maquina;
+
+CREATE TABLE IF NOT EXISTS public.maquina
 (
     "id_maquina " integer NOT NULL,
     id_cliente integer NOT NULL,
@@ -96,9 +174,9 @@ CREATE TABLE IF NOT EXISTS public."Maquina"
     status character varying(30) COLLATE pg_catalog."default" NOT NULL,
     hora_inicio time with time zone NOT NULL,
     hora_fim time with time zone NOT NULL,
-    CONSTRAINT "Maquina_pkey" PRIMARY KEY ("id_maquina "),
+    CONSTRAINT maquina_pkey PRIMARY KEY ("id_maquina "),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
-        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        REFERENCES public.clientes (id_cliente) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
@@ -106,97 +184,192 @@ CREATE TABLE IF NOT EXISTS public."Maquina"
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Maquina"
+ALTER TABLE IF EXISTS public.maquina
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.maquina FROM estagiario;
+REVOKE ALL ON TABLE public.maquina FROM funcionario;
+REVOKE ALL ON TABLE public.maquina FROM gerente;
+
+GRANT SELECT ON TABLE public.maquina TO estagiario;
+
+GRANT UPDATE, SELECT, INSERT ON TABLE public.maquina TO funcionario;
+
+GRANT UPDATE, DELETE, INSERT, SELECT ON TABLE public.maquina TO gerente;
+
+GRANT ALL ON TABLE public.maquina TO postgres;
+
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."Movimento_Financeiro"
+-- Table: public.movimento_financeiro
+
+-- DROP TABLE IF EXISTS public.movimento_financeiro;
+
+CREATE TABLE IF NOT EXISTS public.movimento_financeiro
 (
     id_movto integer NOT NULL,
     descricao_movto character varying(5) COLLATE pg_catalog."default" NOT NULL,
     data_movto date NOT NULL,
     hora_movto time with time zone NOT NULL,
-    CONSTRAINT "Movimento_Financeiro_pkey" PRIMARY KEY (id_movto, descricao_movto)
+    CONSTRAINT movimento_financeiro_pkey PRIMARY KEY (id_movto, descricao_movto)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Movimento_Financeiro"
+ALTER TABLE IF EXISTS public.movimento_financeiro
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.movimento_financeiro FROM gerente;
+
+GRANT DELETE, INSERT, SELECT, UPDATE ON TABLE public.movimento_financeiro TO gerente;
+
+GRANT ALL ON TABLE public.movimento_financeiro TO postgres;
+
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."Reserva"
+-- Table: public.reserva
+
+-- DROP TABLE IF EXISTS public.reserva;
+
+CREATE TABLE IF NOT EXISTS public.reserva
 (
     id_reserva integer NOT NULL,
     id_cliente integer NOT NULL,
     id_maquina integer NOT NULL,
     data_reserva date NOT NULL,
-    CONSTRAINT "Reserva_pkey" PRIMARY KEY (id_reserva),
+    CONSTRAINT reserva_pkey PRIMARY KEY (id_reserva),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
-        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        REFERENCES public.clientes (id_cliente) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
     CONSTRAINT id_maquina_fk FOREIGN KEY (id_maquina)
-        REFERENCES public."Maquina" ("id_maquina ") MATCH SIMPLE
+        REFERENCES public.maquina ("id_maquina ") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
 )
 
 TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.reserva
+    OWNER to postgres;
+
+REVOKE ALL ON TABLE public.reserva FROM estagiario;
+REVOKE ALL ON TABLE public.reserva FROM funcionario;
+REVOKE ALL ON TABLE public.reserva FROM gerente;
+
+GRANT SELECT ON TABLE public.reserva TO estagiario;
+
+GRANT UPDATE, SELECT, INSERT ON TABLE public.reserva TO funcionario;
+
+GRANT UPDATE, DELETE, INSERT, SELECT ON TABLE public.reserva TO gerente;
+
+GRANT ALL ON TABLE public.reserva TO postgres;
+
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."Saida"
+-- Table: public.saida
+
+-- DROP TABLE IF EXISTS public.saida;
+
+CREATE TABLE IF NOT EXISTS public.saida
 (
     id_saida integer NOT NULL,
     data_saida date NOT NULL,
     valor_saida double precision NOT NULL,
-    obs text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT "Saida_pkey" PRIMARY KEY (id_saida)
+    obs character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT saida_pkey PRIMARY KEY (id_saida)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Saida"
+ALTER TABLE IF EXISTS public.saida
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.saida FROM funcionario;
+REVOKE ALL ON TABLE public.saida FROM gerente;
+
+GRANT UPDATE, INSERT, SELECT ON TABLE public.saida TO funcionario;
+
+GRANT UPDATE, DELETE, INSERT, SELECT ON TABLE public.saida TO gerente;
+
+GRANT ALL ON TABLE public.saida TO postgres;
+-- Index: idx_gin_saida
+
+-- DROP INDEX IF EXISTS public.idx_gin_saida;
+
+CREATE INDEX IF NOT EXISTS idx_gin_saida
+    ON public.saida USING gin
+    (obs COLLATE pg_catalog."default" gin_trgm_ops)
+    TABLESPACE pg_default;
+
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."Servico"
+-- Table: public.servico
+
+-- DROP TABLE IF EXISTS public.servico;
+
+CREATE TABLE IF NOT EXISTS public.servico
 (
     id_servico integer NOT NULL,
     tipo_servico character varying(30) COLLATE pg_catalog."default" NOT NULL,
     descricao character varying(30) COLLATE pg_catalog."default",
     produtos character varying(30) COLLATE pg_catalog."default",
     valor double precision,
-    CONSTRAINT "Servico_pkey" PRIMARY KEY (id_servico)
+    CONSTRAINT servico_pkey PRIMARY KEY (id_servico)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Servico"
+ALTER TABLE IF EXISTS public.servico
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.servico FROM estagiario;
+REVOKE ALL ON TABLE public.servico FROM funcionario;
+REVOKE ALL ON TABLE public.servico FROM gerente;
+
+GRANT SELECT ON TABLE public.servico TO estagiario;
+
+GRANT UPDATE, SELECT, INSERT ON TABLE public.servico TO funcionario;
+
+GRANT UPDATE, DELETE, INSERT, SELECT ON TABLE public.servico TO gerente;
+
+GRANT ALL ON TABLE public.servico TO postgres;
+-- Index: idx_servico
+
+-- DROP INDEX IF EXISTS public.idx_servico;
+
+CREATE INDEX IF NOT EXISTS idx_servico
+    ON public.servico USING btree
+    (tipo_servico COLLATE pg_catalog."default" ASC NULLS LAST)
+    TABLESPACE pg_default;
+
 /////////////////////////////////////////////////////////////////
 
-CREATE TABLE IF NOT EXISTS public."historicoUso"
+-- Table: public.historico_uso
+
+-- DROP TABLE IF EXISTS public.historico_uso;
+
+CREATE TABLE IF NOT EXISTS public.historico_uso
 (
     id_historico integer NOT NULL,
     id_cliente integer NOT NULL,
     id_maquina integer NOT NULL,
     id_reserva integer NOT NULL,
-    CONSTRAINT "historico_Uso_pkey" PRIMARY KEY (id_historico),
+    CONSTRAINT historico_uso_pkey PRIMARY KEY (id_historico),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
-        REFERENCES public."Clientes" (id_cliente) MATCH SIMPLE
+        REFERENCES public.clientes (id_cliente) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
     CONSTRAINT id_maquina_fk FOREIGN KEY (id_maquina)
-        REFERENCES public."Maquina" ("id_maquina ") MATCH SIMPLE
+        REFERENCES public.maquina ("id_maquina ") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
     CONSTRAINT id_reserva_fk FOREIGN KEY (id_reserva)
-        REFERENCES public."Reserva" (id_reserva) MATCH SIMPLE
+        REFERENCES public.reserva (id_reserva) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
@@ -204,5 +377,17 @@ CREATE TABLE IF NOT EXISTS public."historicoUso"
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."historico_Uso"
+ALTER TABLE IF EXISTS public.historico_uso
     OWNER to postgres;
+
+REVOKE ALL ON TABLE public.historico_uso FROM estagiario;
+REVOKE ALL ON TABLE public.historico_uso FROM funcionario;
+REVOKE ALL ON TABLE public.historico_uso FROM gerente;
+
+GRANT SELECT ON TABLE public.historico_uso TO estagiario;
+
+GRANT UPDATE, SELECT, INSERT ON TABLE public.historico_uso TO funcionario;
+
+GRANT UPDATE, DELETE, INSERT, SELECT ON TABLE public.historico_uso TO gerente;
+
+GRANT ALL ON TABLE public.historico_uso TO postgres;
