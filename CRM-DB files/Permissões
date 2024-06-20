@@ -1,0 +1,24 @@
+create group gerente
+create group funcionario
+create group estagiario
+
+select * from pg_group
+
+create user gerente01 password '123456'
+create user funcionario01 password '123456'
+create user estagiario01 password '123456'
+
+select * from pg_user
+
+alter group gerente add user gerente01
+alter group atendente add user funcionario01
+alter group estagiario add user estagiario01
+
+GRANT SELECT
+ON avaliacao,clientes,historico_uso,maquina,reserva,servico TO estagiario
+
+GRANT SELECT, INSERT, UPDATE
+ON avaliacao,clientes,historico_uso,maquina,reserva,servico,entrada,saida TO funcionario
+
+GRANT SELECT, INSERT, UPDATE, DELETE 
+ON ALL TABLES IN SCHEMA public TO gerente
