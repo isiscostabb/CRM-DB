@@ -18,7 +18,7 @@ RETURNS void AS $$
 BEGIN
 	insert into entrada(id_entrada,id_cliente,data_entrada,valor_entrada,metodo_pagamento,obs)
 	values (codigo,id_cliente,data_entrada,valor_entrada,metodo_pagamento,obs); 
-	insert into movimento_financeiro(descricao_movto,data_movto,hora_movto)
+	insert into movimento_financeiro(id_movto,descricao_movto,data_movto,hora_movto)
 	values ('Entrada:' || now(),now()); 
 END;
 $$ LANGUAGE 'plpgsql';
@@ -31,7 +31,7 @@ RETURNS void AS $$
 BEGIN
 	insert into saida(id_saida,data_saida,valor_saida,obs)
 	values (codigo,data_saida,valor_saida,obs); 
-	insert into movimento_financeiro(descricao_movto,data_movto,hora_movto)
+	insert into movimento_financeiro(id_movto,descricao_movto,data_movto,hora_movto)
 	values ('Saída:' || now(),now()); 
 END;
 $$ LANGUAGE 'plpgsql';
