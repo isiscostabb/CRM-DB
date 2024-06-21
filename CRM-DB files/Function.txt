@@ -10,7 +10,6 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 
-
 CREATE OR REPLACE FUNCTION InserirEntrada(codigo INTEGER,data_entrada DATE, 
 	                    					valor_entrada DOUBLE PRECISION,
 										  metodo_pagamento VARCHAR, obs VARCHAR)
@@ -19,7 +18,7 @@ BEGIN
 	insert into entrada(id_entrada,data_entrada,valor_entrada,metodo_pagamento,obs)
 	values (codigo,data_entrada,valor_entrada,metodo_pagamento,obs); 
 	insert into movimento_financeiro(tabela_banco,acao,data,hora,usuario)
-	values ('Entrada','Inserir entrada:' || now(),now(),'Funcionário'); 
+	values ('Entrada','Inserir entrada:',now(),now(),'Funcionário'); 
 END;
 $$ LANGUAGE 'plpgsql';
 
@@ -32,7 +31,7 @@ BEGIN
 	insert into saida(id_saida,data_saida,valor_saida,obs)
 	values (codigo,data_saida,valor_saida,obs); 
 	insert into movimento_financeiro(tabela_banco,acao,data,hora,usuario)
-	values ('Saída','Inserir saída:' || now(),now(),'Funcionário'); 
+	values ('Saída','Inserir saída:',now(),now(),'Funcionário'); 
 END;
 $$ LANGUAGE 'plpgsql';
 
