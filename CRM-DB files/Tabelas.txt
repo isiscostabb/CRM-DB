@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS public.avaliacao
     id_cliente integer NOT NULL,
     id_servico integer NOT NULL,
     nota numeric(10,0) NOT NULL,
-    comentario character varying COLLATE pg_catalog."default" NOT NULL,
+    comentario text COLLATE pg_catalog."default" NOT NULL,
     data_avaliacao date NOT NULL,
     CONSTRAINT avaliacao_pkey PRIMARY KEY (id_avaliacao),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS public.entrada
     data_entrada date NOT NULL,
     valor_entrada double precision NOT NULL,
     metodo_pagamento character varying(15) COLLATE pg_catalog."default" NOT NULL,
-    obs character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    obs text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT entrada_pkey PRIMARY KEY (id_entrada),
     CONSTRAINT id_cliente_fk FOREIGN KEY (id_cliente)
         REFERENCES public.clientes (id_cliente) MATCH SIMPLE
@@ -278,7 +278,7 @@ CREATE TABLE IF NOT EXISTS public.saida
     id_saida integer NOT NULL,
     data_saida date NOT NULL,
     valor_saida double precision NOT NULL,
-    obs character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    obs text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT saida_pkey PRIMARY KEY (id_saida)
 )
 
