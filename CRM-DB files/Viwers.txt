@@ -28,3 +28,19 @@ LEFT JOIN avaliacao a ON s.id_servico = a.id_servico;
 
 SELECT *
 FROM vw_ServicoComAvaliacao;
+
+
+
+CREATE VIEW vw_ClienteComHistorico AS
+SELECT 
+	c.id_cliente,
+	c.nome_cliente,
+	c.tipo_cliente,
+	h.id_historico,
+	h.id_maquina,
+	h.id_reserva
+FROM clientes c
+LEFT JOIN historico_uso h ON c.id_cliente = h.id_cliente;
+
+SELECT *
+FROM vw_ClienteComHistorico;
