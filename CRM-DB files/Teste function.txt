@@ -1,10 +1,9 @@
-select from InserirCliente(4, 'Lojas TubaCrici', 'TubaCrici@gmail.com', '(48) 1111- 1111','Criciuma', '6548', '2024-06-20', 'empresa')
-
-select * from clientes
-
-select from InserirEntrada(3,'2024-06-20', 2000, 'A vista', '1x')
-select from InserirSaida(3,'2024-06-20', 2000, 'A vista', '1x')
-
-select * from movimento_financeiro
+select from InserirEntrada(1, 4, '2024-06-20', 2000, 'A vista', '1x')
 
 select * from entrada
+select * from movimento_financeiro
+
+select from InserirSaida(1,'2024-06-20', 2000, '1x')
+
+select * from saida
+select * from movimento_financeiro
