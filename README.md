@@ -12,7 +12,6 @@ Construção de projeto de banco de dados de um​ CRM para sistema de Varejo, p
 
 # Modelo ER Físico
 https://drive.google.com/file/d/1CkvqovhMYCF3JO3P3qt3WcCK4j3H6XAy/view
-![Modelol físico]()
 
 # 4 perguntas de negócio
 
