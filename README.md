@@ -16,8 +16,8 @@ https://drive.google.com/file/d/1CkvqovhMYCF3JO3P3qt3WcCK4j3H6XAy/view
 
 # 4 perguntas de negócio
 
-- Qual foi a quantidade de avaliações enviadas pelos clientes no último mês?
-- Qual foi a fatura total do último mês?
+- Qual foi a quantidade de avaliações enviadas pelos clientes do mês atual?
+- Qual foi a fatura total do mês atual?
 - Existe algum funcionário que seu contrato irá vencer neste mês?
 - Quais máquinas estão com o status disponivéis para o uso?
 
