@@ -10,13 +10,14 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 
-CREATE OR REPLACE FUNCTION InserirEntrada(codigo INTEGER,data_entrada DATE, 
+
+CREATE OR REPLACE FUNCTION InserirEntrada(codigo INTEGER,id_cliente INTEGER,data_entrada DATE, 
 	                    					valor_entrada DOUBLE PRECISION,
-										  metodo_pagamento VARCHAR, obs VARCHAR)
+										  metodo_pagamento VARCHAR,obs VARCHAR)
 RETURNS void AS $$
 BEGIN
-	insert into entrada(id_entrada,data_entrada,valor_entrada,metodo_pagamento,obs)
-	values (codigo,data_entrada,valor_entrada,metodo_pagamento,obs); 
+	insert into entrada(id_entrada,id_cliente,data_entrada,valor_entrada,metodo_pagamento,obs)
+	values (codigo,id_cliente,data_entrada,valor_entrada,metodo_pagamento,obs); 
 	insert into movimento_financeiro(tabela_banco,acao,data,hora,usuario)
 	values ('Entrada','Inserir entrada:',now(),now(),'Funcionário'); 
 END;
@@ -25,15 +26,12 @@ $$ LANGUAGE 'plpgsql';
 
 
 CREATE OR REPLACE FUNCTION InserirSaida(codigo INTEGER,data_saida DATE, 
-	                                     valor_saida DOUBLE PRECISION, obs VARCHAR)
+	                    					valor_saida DOUBLE PRECISION,obs VARCHAR)
 RETURNS void AS $$
 BEGIN
 	insert into saida(id_saida,data_saida,valor_saida,obs)
 	values (codigo,data_saida,valor_saida,obs); 
 	insert into movimento_financeiro(tabela_banco,acao,data,hora,usuario)
-	values ('Saída','Inserir saída:',now(),now(),'Funcionário'); 
+	values ('Saída','Inserir Saída:',now(),now(),'Funcionário'); 
 END;
 $$ LANGUAGE 'plpgsql';
-
-
-

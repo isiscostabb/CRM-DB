@@ -207,11 +207,11 @@ GRANT ALL ON TABLE public.maquina TO postgres;
 
 CREATE TABLE IF NOT EXISTS public.movimento_financeiro
 (
-    id_movto integer NOT NULL,
-    descricao_movto character varying(5) COLLATE pg_catalog."default" NOT NULL,
-    data_movto date NOT NULL,
-    hora_movto time with time zone NOT NULL,
-    CONSTRAINT movimento_financeiro_pkey PRIMARY KEY (id_movto, descricao_movto)
+    tabela_banco character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    acao character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    data date NOT NULL,
+    hora time with time zone NOT NULL,
+    usuario character varying(20) COLLATE pg_catalog."default" NOT NULL
 )
 
 TABLESPACE pg_default;
